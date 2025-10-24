@@ -47,9 +47,7 @@ export const createCallerFactory = t.createCallerFactory;
 export const publicProcedure = t.procedure;  //Public Routes
 //Protected Routes
 export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
-    const session = await auth.api.getSession({
-        headers: await headers(),
-    });
+    const session = ctx.auth;
     if (!session) {
         throw new TRPCError({ code: 'UNAUTHORIZED', message: 'User session not found. Please log in.' });
     }

@@ -1,10 +1,10 @@
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "@/server/api/trpc"
+import { createTRPCRouter, publicProcedure } from "@/server/api/trpc"
 import { exampleRouter } from "./routers/exampleRouter";
 import { z } from "zod";
 
 
 export const appRouter = createTRPCRouter({
-    hello: protectedProcedure
+    hello: publicProcedure
         .input(
             z.object({
                 text: z.string(),
