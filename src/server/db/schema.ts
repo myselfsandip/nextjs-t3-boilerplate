@@ -1,11 +1,8 @@
-import { pgTable, text, timestamp, boolean, pgEnum, numeric, date, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, pgEnum } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 
 export const userRoleEnum = pgEnum("user_role", ["admin", "user"]);
-export const jobTypeEnum = pgEnum("job_type", ["internship", 'job']);
-export const salaryTypeEnum = pgEnum("salary_type", ['unpaid', 'fixed', 'range']);
-export const statusEnum = pgEnum("status", ["active", "inactive"]);
-export const vendorEnum = pgEnum("enquiry_status", ["pending", "approved", "rejected"]);
+
 
 export const user = pgTable("user", {
     id: text('id').primaryKey().$default(() => nanoid()),
@@ -17,8 +14,8 @@ export const user = pgTable("user", {
     banned: boolean("banned").default(false),
     banReason: text('ban_reason'),
     banExpires: timestamp('ban_expires', { mode: 'date' }),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
         .defaultNow()
         .$onUpdate(() => new Date())
         .notNull(),
@@ -53,8 +50,8 @@ export const account = pgTable("account", {
     refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
     scope: text("scope"),
     password: text("password"),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
         .$onUpdate(() => new Date())
         .notNull(),
 });
@@ -64,8 +61,8 @@ export const verification = pgTable("verification", {
     identifier: text("identifier").notNull(),
     value: text("value").notNull(),
     expiresAt: timestamp("expires_at").notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
         .defaultNow()
         .$onUpdate(() => new Date())
         .notNull(),

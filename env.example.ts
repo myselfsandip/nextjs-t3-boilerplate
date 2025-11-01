@@ -1,0 +1,4 @@
+// DATABASE_URL=""
+// BETTER_AUTH_SECRET=""
+// BETTER_AUTH_URL=http://localhost:3000 # Base URL of your app
+// NEXT_PUBLIC_APP_URL=http://localhost:3000  # FOR TRPC trpc/client.tsx
