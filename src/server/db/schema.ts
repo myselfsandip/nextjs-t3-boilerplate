@@ -1,8 +1,23 @@
-import { pgTable, text, timestamp, boolean, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, pgEnum, customType, PgNumericConfig } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 
 export const userRoleEnum = pgEnum("user_role", ["admin", "user"]);
 
+// Taken From : https://github.com/drizzle-team/drizzle-orm/issues/1042#issuecomment-2224689025
+export const numericCasted = customType<{
+    data: number
+    driverData: string
+    config: PgNumericConfig
+}>({
+    dataType: (config) => {
+        if (config?.precision && config?.scale) {
+            return `numeric(${config.precision}, ${config.scale})`
+        }
+        return 'numeric'
+    },
+    fromDriver: (value: string) => Number.parseFloat(value), // note: precision loss for very large/small digits so area to refactor if needed
+    toDriver: (value: number) => value.toString(),
+});
 
 export const user = pgTable("user", {
     id: text('id').primaryKey().$default(() => nanoid()),
